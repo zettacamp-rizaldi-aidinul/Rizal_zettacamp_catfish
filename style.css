@@ -1,0 +1,105 @@
+nav {
+    margin: auto;
+    text-align: center;
+    width: 100%;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+nav ul {
+    background: #222831;
+    padding: 0 20px;
+    list-style: none;
+    position: relative;
+    display: inline-table;
+    width: 100%;
+}
+
+nav ul li {
+    float: left;
+}
+
+nav ul li:hover {
+    background: #c2c8db;    
+}
+
+nav ul li:hover a {
+    color: #000;
+}
+
+nav ul li a {
+    font-size: large;
+    display: block;
+    padding: 15px 25px;
+    color: #fff;
+    text-decoration: none;
+}
+
+nav ul li a.active {
+    background-color: #393E46;
+}
+
+table {
+    border: #000;
+    border-style: outset;
+    position: relative;
+    margin: auto;
+}
+
+table td.judul {
+    font-size: x-large;
+    font-weight: 700;
+}
+
+table td {
+    padding: 20px 35px;
+}
+
+table a {
+    color: #000;
+}
+
+table a:hover {
+    color: blue;
+}
+
+div.row {
+    margin: 35px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+div.col-12 {
+    border: 1px solid black;
+    background-color: #393E46;
+    width: 100%;
+    color: #fff;
+}
+
+div h1 {
+    text-align: center;
+}
+
+div.col-4 {
+    margin-top: 2%;
+    margin-right: 5%;
+    width: 30%;
+    background-color: #c2c8db;
+}
+
+div.left {
+    margin-right: 5%;
+}
+
+div.right {
+    margin-left: 0%;
+    margin-right: 0%;
+}
+
+div ul {
+    list-style: none;
+    padding-left: 0px;
+}
+
+div li {
+    margin: 0px 25px 0px 25px;
+}
