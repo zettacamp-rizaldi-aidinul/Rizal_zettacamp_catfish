@@ -42,7 +42,8 @@ table {
     border: #000;
     border-style: outset;
     position: relative;
-    margin: auto;
+    width: 40%;
+    margin: 3% 5%;
 }
 
 table td.judul {
