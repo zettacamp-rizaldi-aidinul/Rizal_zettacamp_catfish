@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping List</title>
+    <style>
+        nav {
+            margin: auto;
+            text-align: center;
+            width: 100%;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        nav ul {
+            background: #222831;
+            padding: 0 20px;
+            list-style: none;
+            position: relative;
+            display: inline-table;
+            width: 100%;
+        }
+
+        nav ul li {
+            float: left;
+        }
+
+        nav ul li:hover {
+            background: #c2c8db;    
+        }
+
+        nav ul li:hover a {
+            color: #000;
+        }
+
+        nav ul li a {
+            font-size: large;
+            display: block;
+            padding: 15px 25px;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        nav ul li a.active {
+            background-color: #464950;
+        }
+        div.container{
+            margin: 2%;
+            font-family:"Arial, Helvetica, sans-serif";
+        }
+        h1{
+            text-align: center;
+        }
+        table, td, th{
+            width: auto;
+            margin: auto;
+            padding: 20px;
+            border-collapse: collapse;
+            border: 1px solid rgb(194, 192, 192);
+            text-align: center
+        }
+        tr:nth-child(even){
+            background-color: #e6e6ea;
+        }
+        tr:hover{
+            background-color: rgb(210, 210, 210);
+        }
+        th {
+            background-color: #3F72AF;
+            color: #fff;
+        }
+        ul{
+            list-style: none;
+            padding-left: 0px;
+        }
+        ul.lists{
+            list-style: circle;
+            padding-left: 20px;
+            text-align: left;
+        }
+        ol{
+            line-height: 1.6;
+            padding-left: 20px;
+            text-align: left;
+        }
+
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="Index.html">Home</a></li>
+            <li><a class="active" href="shopping_list.html">Shopping List</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1>Shopping List</h1>
+        <table>
+            <tr>
+                <th>No</th>
+                <th>Item</th>
+                <th>Variety</th>
+                <th>Amount</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>
+                    <ul>
+                        <li><img src="https://1.bp.blogspot.com/-I3-Qu_pHlQM/YLGtxEVkWXI/AAAAAAAAFHw/V5Hc8Ya0C-QVGzwDJK4Eqgg8CjcqRap9gCLcBGAsYHQ/s1600/Logo%2BAqua.png" alt="Aqua" height="auto" width="100"></li>
+                        <li>Aqua</li>
+                    </ul>
+                </td>
+                <td>
+                    <ol>
+                        <li>Aqua Gelas</li>
+                        <li>Aqua Botol
+                            <ul class="lists">
+                                <li>330 ml</li>
+                                <li>450 ml</li>
+                                <li>600 ml</li>
+                            </ul>
+                        </li>
+                        <li>Aqua Galon</li>
+                    </ol>
+                </td>
+                <td>3</td>
+                <td>12.000</td>
+                <td>36.000</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>
+                    <ul>
+                        <li><img src="https://www.indomilk.com/img/logo-indomilk.png" alt="Indomilk" height="auto" width="100"></li>
+                        <li>Indomilk</li>
+                    </ul>
+                </td>
+                <td>
+                    <ol>
+                        <li>Indomilk Goodmilk</li>
+                        <li>Indomilk Kids</li>
+                        <li>Indomilk Kental Manis</li>
+                        <li>Indomilk Bubuk</li>
+                    </ol>
+                </td>
+                <td>3</td>
+                <td>12.000</td>
+                <td>36.000</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>
+                    <ul>
+                        <li><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/LOGO_INDOMIE.png/1280px-LOGO_INDOMIE.png" alt="Indomie" height="70" width="100"></li>
+                        <li>Indomie</li>
+                    </ul>
+                </td>
+                <td>
+                    <ol>
+                        <li>Indomie Goreng
+                            <ul class="lists">
+                                <li>Original</li>
+                                <li>Rendang</li>
+                                <li>Sate</li>
+                                <li>Cabe Ijo</li>
+                            </ul>
+                        </li>
+                        <li>Indomie Kuah
+                            <ul class="lists">
+                                <li>Ayam Spesial</li>
+                                <li>Soto</li>
+                                <li>Baso Sapi</li>
+                                <li>Kari ayam</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </td>
+                <td>3</td>
+                <td>12.000</td>
+                <td>36.000</td>
+            </tr>
+        </table>
+    </div>
+    
+</body>
+</html>

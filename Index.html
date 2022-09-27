@@ -7,19 +7,65 @@
     <title>Deskripsi Diri</title>
     <style>
         body {
-            background-color: #3282B8;
+            background-color: #DBE2EF;
         }
         div.container {
-            margin: 5%;
+            margin: 1% 5%;
             background-color: #F4EEFF;
             border: 1px solid;
             border-radius: 5%;
             padding: 2% 5%;
             color: #1B262C;
         }
+        nav {
+            margin: auto;
+            text-align: center;
+            width: 100%;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        nav ul {
+            background: #222831;
+            padding: 0 20px;
+            list-style: none;
+            position: relative;
+            display: inline-table;
+            width: 100%;
+        }
+
+        nav ul li {
+            float: left;
+        }
+
+        nav ul li:hover {
+            background: #c2c8db;    
+        }
+
+        nav ul li:hover a {
+            color: #000;
+        }
+
+        nav ul li a {
+            font-size: large;
+            display: block;
+            padding: 15px 25px;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        nav ul li a.active {
+            background-color: #393E46;
+        }
     </style>
 </head>
 <body>
+    <nav>
+        <ul>
+            <li><a class="active" href="Index.html">Home</a></li>
+            <li><a href="shopping_list.html">Shopping List</a></li>
+        </ul>
+    </nav>
+
     <div class="container">
         <h1><strong><center>PROFIL</center></strong></h1>
         <img src="assets/profil.jpg" width="200" height="200" alt="Foto Profil"><br>
