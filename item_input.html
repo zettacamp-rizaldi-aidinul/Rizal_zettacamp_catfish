@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Item Input</title>
+    <style>
+        nav {
+            margin: auto;
+            text-align: center;
+            width: 100%;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        nav ul {
+            background: #222831;
+            padding: 0 20px;
+            list-style: none;
+            position: relative;
+            display: inline-table;
+            width: 100%;
+        }
+
+        nav ul li {
+            float: left;
+        }
+
+        nav ul li:hover {
+            background: #c2c8db;    
+        }
+
+        nav ul li:hover a {
+            color: #000;
+        }
+
+        nav ul li a {
+            font-size: large;
+            display: block;
+            padding: 15px 25px;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        nav ul li a.active {
+            background-color: #464950;
+        }
+        div.container{
+            margin: 2%;
+            font-family:"Arial, Helvetica, sans-serif";
+        }
+        input, select {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            background-color: #f8f8f8;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type=textarea] {
+            width: 100%;
+            height: 150px;
+            padding: 12px 20px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f8f8f8;
+            resize: none;
+        }
+        input[type=radio]{
+            width: 5%;
+        }
+
+        input[type=submit] {
+            width: 100%;
+            background-color: #3F72AF;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type=submit]:hover {
+            background-color: #254872;
+        }
+
+        table, td, th{
+            width: auto;
+            margin: auto;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgb(194, 192, 192);
+            border-collapse: collapse;
+        }
+
+        oprofil {
+            width: 100px;
+            height: auto;
+        }
+    </style>
+    
+    
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="Index.html">Home</a></li>
+            <li><a href="shopping_list.html">Shopping List</a></li>
+            <li><a href="multimedia.html">Multimedia & Form</a></li>
+            <li><a class="active" href="item_input.html">Item Input</a></li>
+            <li><a href="item_list.html">Item List</a></li>
+        </ul>
+    </nav>
+
+    <section id="form">
+        <div class="container">
+            <form id="form" name="form" onsubmit="return false" enctype="multipart/form-data">
+                <label for="fname">First name :</label>
+                <input type="text" id="fname" name="fname" required placeholder="Your First Name"><br>
+
+                <label for="lname">Last name :</label>
+                <input type="text" id="lname" name="lname" required placeholder="Your Last Name"><br>
+
+                <label for="biography">Biography :</label>
+                <input type="textarea" id="biography" required placeholder="Your Biography"><br>
+
+                <label for="gender" name="gender">Gender :</label>
+                <input type="radio" id="gender" name="gender" value="male" checked='checked'>
+                <label style="margin-left:-2%;"for="male" >Male</label>
+                <input type="radio" name="gender" id="gender" value="female">
+                <label style="margin-left:-2%;" for="female">Female</label><br>
+                
+                <label for="email">Email :</label>
+                <input type="email" name="email" id="email" required placeholder="sacawc@adsad.ass"><br>
+
+                <label for="telephone">Telephone :</label>
+                <input type="tel" name="telephone" id="telephone" required placeholder="082..."><br>
+
+                <label for="age">Age :</label>
+                <input type="number" name="age" id="age" required placeholder="Your Age"><br>
+
+                <label for="sosmed">Sosial Media :</label>
+                <input type="url" name="sosmed" id="sosmed" placeholder="Your Link of the Social Media"><br>
+
+                <label for="Profil">Profil Photo :</label>
+                <input type="file" name="profil" value="profil" id="profil" accept="image/*" onchange="loadFile(event)">
+
+                <input type="submit" value="Submit" onclick="tampilan()">
+            </form>
+        </div>
+    </section>
+    
+    <section id="hasil">
+        <h1 style="text-align: center;">Hasil</h1>
+        <table id="hasilform">
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>biography</th>
+                <th>gender</th>
+                <th>email</th>
+                <th>telephone</th>
+                <th>Age</th>
+                <th>Sosmed</th>
+                <th>Profil Photo</th>
+            </tr>
+            <tr>
+                <td id="ofname"></td>
+                <td id="olname"></td>
+                <td id="obiography"></td>
+                <td id="ogender"></td>
+                <td id="oemail"></td>
+                <td id="otelephone"></td>
+                <td id="oage"></td>
+                <td id="ososmed"></td>
+                <td id="oprofil"><img src="assets/profil.jpg" alt="profil" width="100" height="auto"></td>
+            </tr>
+        </table>
+    </section>
+
+    <script>
+        function tampilan(){
+            var fname = document.getElementById("fname").value;
+            var lname = document.getElementById("lname").value;
+            var biography = document.getElementById("biography").value;
+            var gender = document.getElementById("gender").value;
+            var email = document.getElementById("email").value;
+            var telephone = document.getElementById("telephone").value;
+            var age = document.getElementById("age").value;
+            var sosmed = document.getElementById("sosmed").value;
+            var profil = document.getElementById("profil").value;
+
+            var ofmame = document.getElementById("ofname");
+            var olname = document.getElementById("olname");
+            var obiography = document.getElementById("obiography");
+            var ogender = document.getElementById("ogender");
+            var oemail = document.getElementById("oemail");
+            var otelephone = document.getElementById("otelephone");
+            var oage = document.getElementById("oage");
+            var ososmed = document.getElementById("ososmed");
+            var hasilform = document.getElementById("hasilform");
+            // var oprofil = document.getElementById("oprofil");
+
+            ofname.innerHTML = fname;
+            olname.innerHTML = lname;
+            obiography.innerHTML = biography;
+            ogender.innerHTML = gender;
+            oemail.innerHTML = email;
+            otelephone.innerHTML = telephone;
+            oage.innerHTML = age;
+            ososmed.innerHTML = sosmed;
+            // oprofil.src = URL.createObjectURL(profil.files[0]);;
+
+            // document.getElementById('hasilform').insertRow(-1).innerHTML = '<tr><td> + $(#fname).val() + </td><td> + $(#lname).val() + </td><td> + $(#biography).val() + </td><td> + $(#gender).val() + </td><td> + $(#email).val() + </td><td> + $(#telephone).val() + </td><td> + $(#age).val() + </td><td> + $(#sosmed).val() + </td><td> + $(#profil).val() + </td></tr>'
+        }
+
+        // var loadFile = function(event) {
+        //     var image = document.getElementById('profil');
+        //     image.src = URL.createObjectURL(event.target.files[0]);
+        // };
+    </script>
+    
+    <!-- <script src="assets/jquery/jquery.min.js"></script> -->
+</body>
+</html>
