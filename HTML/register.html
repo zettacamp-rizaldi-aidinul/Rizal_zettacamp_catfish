@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
+    <title>Register</title>
+</head>
+<body>
+    <section id="form">
+        <div class="container">
+            <h1>Sign Up</h1>
+            <form action="profile.html">
+                <label for="fname">First name :</label>
+                <input type="text" name="fname" required placeholder="Your First Name"><br>
+
+                <label for="lname">Last name :</label>
+                <input type="text" name="lname" required placeholder="Your Last Name"><br>
+
+                <label for="email">Email :</label>
+                <input type="email" name="email" required placeholder="sacawc@adsad.ass"><br>
+
+                <label for="telephone">Phone Number :</label>
+                <input type="tel" name="telephone" id="telephone" required placeholder="082..."><br>
+
+                <label for="Type" name="type">Type of Account :</label>
+                <input type="radio" name="type" value="personal" checked='checked'>
+                <label style="margin-left:-1%;"for="personal" >Personal</label>
+                <input type="radio" name="type" value="free">
+                <label style="margin-left:-1%;" for="free">Free</label><br>
+
+                <label for="Profil">Profil Photo :</label>
+                <input type="file" name="profil" value="profil" id="profil" accept="image/*">
+
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </section>
+</body>
+</html>

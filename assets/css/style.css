@@ -1,0 +1,282 @@
+nav {
+    margin: auto;
+    text-align: center;
+    width: 100%;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+nav ul {
+    background: #222831;
+    padding: 0 20px;
+    list-style: none;
+    position: relative;
+    display: inline-table;
+    width: 100%;
+}
+
+nav ul li {
+    float: left;
+}
+
+nav ul li:hover {
+    background: #c2c8db;    
+}
+
+nav ul li:hover a {
+    color: #000;
+}
+
+nav ul li a{
+    font-size: large;
+    display: block;
+    padding: 15px 25px;
+    color: #fff;
+    text-decoration: none;
+}
+
+nav ul li a.active {
+    color: #fff;
+    background-color: #393E46;
+}
+
+.services h1 {
+    text-align: center;
+}
+
+hr{
+  
+    border: 0;
+    height: 1px;
+    width: 10%;
+    position: relative;
+    margin: 30px auto;
+    background: #393E46;
+}
+      
+hr:before{
+    content: "";
+    width: 6px;
+    height: 6px;
+    background: #393E46;
+    display: inline-block;
+    border: 2px solid #393E46;
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    margin: 0 0 0 -3px;
+}
+
+.services ul {
+    list-style: none;
+    position: relative;
+    padding-left: 0px;
+    text-align: center;
+}
+
+.services ul p {
+    text-align: center;
+    margin: auto;
+}
+
+.pricing {
+    background-color: #EEEEEE;
+    margin: 10% 5%;
+    padding: 2% 0%;
+}
+.pricing h1 {
+    text-align: center;
+}
+
+.pricing ul {
+    padding-left: 0px;
+    list-style: none;
+    display: inline-block;
+    width: 30%;
+    text-align: center;
+    position: relative;
+    border: #000 solid;
+    border-radius: 5%;
+    margin-left: 100px;
+}
+
+.pricing li {
+    padding: 2%;
+}
+
+.pricing li p {
+    width: 100%;
+}
+
+.pricing h3 {
+    margin: 10px 0px 5px 0px;
+}
+
+.pricing h5{
+    margin-top: 0px;
+}
+
+.pricing a {
+    background-color: #EEEEEE;
+    color: #D72323;
+    border: 2px solid #D72323;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 3%;
+  }
+  
+.pricing a:hover, .pricing a:active {
+    background-color: #D72323;
+    color: white;
+  }
+
+#form .container {
+    border-radius: 5%;
+    margin: 3% 30%;
+    background-color: #c2c8db;
+    padding: 20px;
+}
+
+#form .container span img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    background-color: #f8f8f8;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=textarea] {
+    width: 100%;
+    height: 150px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    resize: none;
+}
+input[type=radio]{
+    width: 5%;
+}
+
+input[type=submit] {
+    width: 100%;
+    background-color: #3F72AF;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type=submit]:hover {
+    background-color: #254872;
+}
+
+.container h1 {
+    text-align: center;
+}
+
+.list table, .list td, .list th{
+    width: auto;
+    margin: auto;
+    padding: 20px;
+    border-collapse: collapse;
+    border: 1px solid rgb(194, 192, 192);
+    text-align: center
+}
+.list tr:nth-child(even){
+    background-color: #e6e6ea;
+}
+.list tr:hover{
+    background-color: rgb(210, 210, 210);
+}
+.list th {
+    background-color: #3F72AF;
+    color: #fff;
+}
+
+.preview div.container {
+    margin: 2% 5%;
+}
+
+div.image {
+    margin-left: 10%;
+    float: left;
+}
+
+div.image img {
+    width: 250px;
+    height: auto;
+}
+
+div.title-desc {
+    text-align: center;
+}
+
+div.description table {
+    margin-left: 45%;
+    margin-bottom: 60px;
+}
+
+div.description tr, div.description td {
+    padding: 2% 0%;
+}
+
+div.list-song table {
+    margin: auto;
+    width: 80%;
+}
+
+div.list-song table td {
+    padding: 2% 0%;
+}
+
+div.harga {
+    text-align: center;
+    margin-top: 5%;
+    padding: 10px;
+    background-color: #d32c2c;
+}
+
+div.harga h3 {
+    display: inline;
+    
+    color: white;
+}
+
+.content span img {
+    float: right;
+    margin-right: 20px;
+    width: 300px;
+    height: auto;
+}
+
+.about .container {
+    width: 100%;
+}
+
+.about .content {
+    margin: 5% 15%;
+}
+
+.content p {
+    width: 40%;
+}
+
+.content h2 {
+    padding-top: 90px;
+    text-align: center;
+    width: 40%;
+}
