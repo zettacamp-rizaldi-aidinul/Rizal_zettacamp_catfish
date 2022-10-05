@@ -1,0 +1,124 @@
+/* Global */
+.container {
+    width: 90%;
+    margin: auto;
+}
+
+h1 {
+    margin: 40px 0px 0px 40px;
+    text-align: center;
+}
+
+/* Index Page */
+.cards {
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 1em;
+}
+
+.card {
+    box-sizing: content-box;
+    width: 200px;
+    margin: 0em 1em;
+    padding: 1%;
+    border: 1px solid #DFD3C3;
+    box-shadow: 2px 0px #f0f0f0;
+}
+
+.cards:nth-child(2) {
+    margin-top: 0px;
+}
+
+.cards:nth-child(4) {
+    margin-bottom: 0px;
+}
+
+
+.card:hover {
+    background-color: #f0f0f0;
+}
+
+.card img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    height: 150px;
+}
+
+.card h1 {
+    margin-top: 5%;
+    font-size: 1.2em;
+    font-weight: 800;
+    margin-left: 0px;
+}
+
+.card p {
+    font-size: 1em;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.card a::after {
+    content: '\1F822';
+}
+
+.card a:link, .card a:visited {
+    font-size: 0.9em;
+    background-color: #36AE7C;
+    color: white;
+    padding: 3.5% 7%;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 5px;
+    margin-left: 40px;
+    margin-bottom: 7%;
+}
+
+.card a:hover,.card a:active {
+    background-color: #279668;
+  }
+
+footer {
+    padding: 30px;
+    background-color: #5F7161;
+    text-align: center;
+}
+
+footer a:link, footer a:visited {
+    font-size: 1.2em;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    margin: 10px;
+}
+
+footer a:hover, footer a:active {
+    color: #dfdfdf;
+}
+
+/* Product Detail */
+body.product-detail {
+    background-color: #c4c4c4;
+}
+
+.content img {
+    display: block;
+    width: 350px;
+    height: auto;
+    margin: 20px auto 5px auto;
+}
+
+.content h1 {
+    margin: 10px auto;
+    font-size: 1.5em;
+}
+
+.content p {
+    text-align: justify;
+    word-spacing: 5px;
+    line-height: 1.5;
+    margin: 0px 39%;
+}
