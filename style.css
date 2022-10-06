@@ -1,11 +1,80 @@
-/* Global */
-.container {
-    width: 90%;
+/* Multiple Class */
+.rounded-sm {
+    border-radius: 5px;
+}
+
+.m-auto {
     margin: auto;
 }
 
+.m-1 {
+    margin: 1rem;
+}
+
+.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mx-0 {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.mx-1 {
+    margin: 0em 1rem;
+}
+
+.my-1 {
+    margin: 1rem 0rem;
+}
+
+.mt-5 {
+    margin-top: 5%;
+}
+
+.mr-2 {
+    margin-right: 2%;
+}
+
+.border-1 {
+    border: 1px solid #DFD3C3;
+}
+
+.p-1 {
+    padding: 1%;
+}
+
+.p-5 {
+    padding: 5%;
+}
+
+.px-5 {
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+/* Global */
+html {
+    margin: 50px;
+}
+
+.container {
+    width: 90%;
+    margin-left: 5%;
+}
+
+.title {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: #FFFFFF;
+    color: #000000;
+}
+ 
 h1 {
-    margin: 40px 0px 0px 0px;
+    margin: 10px 0px 10px 0px;
     text-align: center;
 }
 
@@ -14,26 +83,13 @@ h1 {
     justify-content: center;
     display: flex;
     flex-wrap: wrap;
-    margin: 1em;
 }
 
 .card {
     box-sizing: content-box;
     width: 200px;
-    margin: 0em 1em;
-    padding: 1%;
-    border: 1px solid #DFD3C3;
     box-shadow: 2px 0px #f0f0f0;
 }
-
-.cards:nth-child(2) {
-    margin-top: 0px;
-}
-
-.cards:nth-child(4) {
-    margin-bottom: 0px;
-}
-
 
 .card:hover {
     background-color: #f0f0f0;
@@ -41,21 +97,18 @@ h1 {
 
 .card img {
     display: block;
-    margin-left: auto;
-    margin-right: auto;
     width: 200px;
     height: 150px;
 }
 
 .card h1 {
-    margin-top: 5%;
-    font-size: 1.2em;
+    font-size: 1.2rem;
     font-weight: 800;
     margin-left: 0px;
 }
 
 .card p {
-    font-size: 1em;
+    font-size: 1rem;
     line-height: 1.2;
     text-align: center;
 }
@@ -65,7 +118,7 @@ h1 {
 }
 
 .card a:link, .card a:visited {
-    font-size: 0.9em;
+    font-size: 0.9rem;
     background-color: #36AE7C;
     color: white;
     padding: 3.5% 7%;
@@ -82,9 +135,13 @@ h1 {
   }
 
 footer {
-    padding: 30px;
+    padding: 20px;
     background-color: #5F7161;
     text-align: center;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
 }
 
 footer a:link, footer a:visited {
@@ -108,17 +165,70 @@ body.product-detail {
     display: block;
     width: 350px;
     height: auto;
-    margin: 20px auto 5px auto;
-}
-
-.content h1 {
-    margin: 10px auto;
-    font-size: 1.5em;
+    margin: 10px auto 5px auto;
 }
 
 .content p {
     text-align: justify;
     word-spacing: 5px;
     line-height: 1.5;
-    margin: 0px 39%;
+}
+
+/* List Items */
+
+.content {
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.storage {
+    margin: 1em;
+}
+
+.content img {
+    display: block;
+    width: 50px;
+    height: auto;
+    float: left;
+}
+
+
+.items {
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    overflow-y: scroll;
+    height: 450px;
+}
+
+.content {
+    box-sizing: content-box;
+    width: 425px;
+    box-shadow: 2px 0px #f0f0f0;
+    height: 100%;
+}
+
+ul, li {
+    list-style: none;
+    width: 100%;
+    height: 70px;
+}
+
+li {
+    margin: 0.2rem 0 0.5rem 0;
+}
+
+.desc h1 {
+    font-size: 1.2rem;
+    font-weight: 800;
+    text-align: left;
+    margin: 10px 0px 0px;
+}
+
+.desc p {
+    width: 100%;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
