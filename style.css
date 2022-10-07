@@ -1,0 +1,138 @@
+/* Multiple Class */
+.rounded-sm {
+    border-radius: 5px;
+}
+
+.m-auto {
+    margin: auto;
+}
+
+.m-1 {
+    margin: 1rem;
+}
+
+.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mx-0 {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.mx-1 {
+    margin: 0em 1rem;
+}
+
+.my-1 {
+    margin: 1rem 0rem;
+}
+
+.mt-5 {
+    margin-top: 5%;
+}
+
+.mr-2 {
+    margin-right: 2%;
+}
+
+.border-1 {
+    border: 1px solid #DFD3C3;
+}
+
+.p-1 {
+    padding: 1%;
+}
+
+.p-5 {
+    padding: 5%;
+}
+
+.px-5 {
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+/* Global */
+html {
+    margin: 50px;
+}
+
+.container {
+    width: 90%;
+    margin-left: 5%;
+}
+
+.title {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: #FFFFFF;
+    color: #000000;
+}
+ 
+h1 {
+    margin: 10px 0px 10px 0px;
+    text-align: center;
+    font-size: 10mm;
+}
+
+/* Index Page */
+.cards {
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    width: 80%;
+    gap: 1em;
+}
+
+.card {
+    box-sizing: content-box;
+    width: 200px;
+    box-shadow: 2px 0px #f0f0f0;
+}
+
+.card:hover {
+    background-color: #f0f0f0;
+}
+
+.card img {
+    display: block;
+    width: 200px;
+    height: 150px;
+}
+
+.card h1 {
+    font-size: 1.5vw;
+    font-weight: 800;
+    margin-left: 0px;
+}
+
+.card p {
+    font-size: 1rem;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.card a::after {
+    content: '\1F822';
+}
+
+.card a:link, .card a:visited {
+    font-size: 0.9rem;
+    background-color: #36AE7C;
+    color: white;
+    padding: 3.5% 7%;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 5px;
+    margin-left: 40px;
+    margin-bottom: 7%;
+}
+
+.card a:hover,.card a:active {
+    background-color: #279668;
+  }
