@@ -201,6 +201,12 @@ body.product-detail {
     width: 100%;
     overflow-y: scroll;
     height: 450px;
+    /* -ms-overflow-style: none;
+    scrollbar-width: none; */
+}
+
+.items::-webkit-scrollbar {
+    display: none;
 }
 
 .content {
