@@ -25,6 +25,7 @@ document.getElementById("price").innerHTML = book.price;
 document.getElementById("price-discount").innerHTML = detail.priceAfterDiscount;
 document.getElementById("price-tax").innerHTML = detail.priceTax;
 document.getElementById("total-price").innerHTML = detail.totalPrice;
+document.getElementById("boolean").innerHTML = detail.totalPrice > book.price
 
 
 
