@@ -3,11 +3,11 @@ let book = {
     price : 120000
 }
 
-const discount = 0.05;
+const discount = 5;
 const tax = 0.1;
 
 function answer(book, discount, tax) {
-    let totalDiscount = book.price * discount;
+    let totalDiscount = book.price * discount / 100;
     let totalTax = (book.price - totalDiscount) * tax;
     let resultPrice = {
         priceDiscount : totalDiscount,
