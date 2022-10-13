@@ -46,10 +46,16 @@ function answer(book, discount, tax, termOfCredit) {
 }
 
 const detail = answer(book, discount, tax, termOfCredit);
+const[month] = detail;
 
-for (j = 0; j <= termOfCredit; j++) {
-    console.log(detail[j]);
-}
+
+console.log(month);
+
+console.log(detail);
+// for (j = 0; j <= termOfCredit; j++) {
+//     console.log(detail[j]);
+// }
+
 document.getElementById("title").innerHTML = book.title;
 document.getElementById("price").innerHTML = book.price;
 document.getElementById("stock").innerHTML = book.stock;
