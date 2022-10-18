@@ -1,6 +1,11 @@
+const e = require('express');
 const express = require('express');
+const { resolve } = require('path');
 const app = express();
 const port = 4000;
+var fs = require('fs').promises;
+var event = require("events");
+const EventEmitter = new event.EventEmitter();
 
 const checkAuth = (req, res, next) => {
   const auth = req.headers["authorization"];
@@ -95,20 +100,54 @@ async function PriceOfCredit(termOfCredit, valPrice, creditMonth) {
   return credit
 }
 
+
+function readDataFile (){
+  const result = fs.readFile('./file.txt', 'utf-8').catch((error) => console.log(error.message));
+  return result
+}
+
+// function readFileData() {
+//   return new Promise((resolve, reject) => {
+    
+//     fs.readFile('./file.txt', 'utf-8', function (err, content) {
+//       console.log("coba")
+//       console.log(content)
+//       if (err) {
+//         return reject(err)
+//       }
+//       resolve(content)
+//     })
+//   }) 
+// }
+
 async function bookPurchasing() {
   
   const valPrice = calculatePrice(discount,tax);
   const priceTotal = await PriceOfCredit(termOfCredit, valPrice, creditMonth);
-  // console.log(priceTotal);  
+  const readFile = await readDataFile();
   return {
     valPrice,
-    priceTotal
-    
+    priceTotal,
+    readFile
   }
 }
 
-app.get('/checkAuth', checkAuth, async (req, res) => {
+// EventEmitter.on('check', readDataFile)
+app.get('/withoutAwait', checkAuth, async (req, res) => {
+  // const detail = EventEmitter.emit('check');
+  const detail = readDataFile();
+  detail.then(
+    function(param) {
+      console.log(param)
+      res.send(param)
+    }
+  )
+});
+
+app.get('/withAwait', checkAuth, async (req, res) => {
   const detail = await bookPurchasing();
   console.log(detail);
   res.send(detail)
 });
+
+
