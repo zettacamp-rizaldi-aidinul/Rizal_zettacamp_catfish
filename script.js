@@ -65,6 +65,10 @@ async function PriceOfCredit(termOfCredit, valPrice, creditMonth) {
   for (j = 0; j < termOfCredit; j++) {
     if(termOfCredit <= 3){
       creditCash = (valPrice.totalPrice / termOfCredit) + ((valPrice.totalPrice / termOfCredit) * (creditMonth * (j+1))) + 100000;
+      if(j+1 == 2) {
+        creditCash += 10000;
+      }
+      const x = j + 1 === 2 ? 1000 : ''
       credit.push({
         "month" : months + j,
         "creditPrice" : creditCash,
@@ -87,7 +91,6 @@ async function PriceOfCredit(termOfCredit, valPrice, creditMonth) {
         "paylater" : (valPrice.totalPrice - ((valPrice.totalPrice / termOfCredit) * (j + 1)))
       })
     }
-    
   }
   return credit
 }
@@ -96,10 +99,11 @@ async function bookPurchasing() {
   
   const valPrice = calculatePrice(discount,tax);
   const priceTotal = await PriceOfCredit(termOfCredit, valPrice, creditMonth);
-  console.log(priceTotal);  
+  // console.log(priceTotal);  
   return {
-    priceTotal,
-    valPrice
+    valPrice,
+    priceTotal
+    
   }
 }
 
@@ -108,12 +112,3 @@ app.get('/checkAuth', checkAuth, async (req, res) => {
   console.log(detail);
   res.send(detail)
 });
-
-// app.get('/async-function', async function (req, res, next) {
-//   const timeout = setTimeout(function () {
-//     console.log('ok');
-//   }, 1000);
-//   const result = await calculatePrice(discount, tax);
-//   console.log(result);
-//   console.log('oke done async');
-// }); 
