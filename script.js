@@ -33,6 +33,8 @@ let book = {
     amount : 20
 }
 
+
+
 const discount = 0.05;
 const tax = 0.1;
 const creditMonth = 0.01;
@@ -106,20 +108,6 @@ function readDataFile (){
   return result
 }
 
-// function readFileData() {
-//   return new Promise((resolve, reject) => {
-    
-//     fs.readFile('./file.txt', 'utf-8', function (err, content) {
-//       console.log("coba")
-//       console.log(content)
-//       if (err) {
-//         return reject(err)
-//       }
-//       resolve(content)
-//     })
-//   }) 
-// }
-
 async function bookPurchasing() {
   
   const valPrice = calculatePrice(discount,tax);
@@ -131,6 +119,30 @@ async function bookPurchasing() {
     readFile
   }
 }
+function cekmap() {
+  let map = new Map(Object.entries(book));
+  let listBookMap = new Map([[1212, "Cinderella"]]); 
+  listBookMap.set(32154,'Harry Potter')
+  .set(21312, 'Tere Liye')
+  .set(214212, 'Naruto')
+  let akhdani = { name : "Akhdani"}
+  let listBookSet = new Set ();
+  listBookSet.add({name : 'Akhdani'});
+  listBookSet.add(akhdani)
+  const listBookObject = Array.from(listBookMap);
+  // const listBookObjectReal = Object.fromEntries(listBookMap);
+  const listBookObjectKey = Array.from(listBookMap.keys());
+  const listBookObjectValue = Array.from(listBookMap.values());
+  const listBookArray = Array.from(listBookSet);
+  return {
+    listBookObject,
+    // listBookObjectReal,
+    listBookObjectKey,
+    listBookObjectValue,
+    listBookArray
+  }
+}
+
 
 // EventEmitter.on('check', readDataFile)
 app.get('/withoutAwait', checkAuth, async (req, res) => {
@@ -149,5 +161,13 @@ app.get('/withAwait', checkAuth, async (req, res) => {
   console.log(detail);
   res.send(detail)
 });
+
+app.get('/setAndMap', checkAuth, async (req, res) => {
+  const detail = cekmap()
+  // console.log(detail);
+  // console.log(listBook);
+  // res.send(detail);
+  res.send(detail)
+})
 
 
