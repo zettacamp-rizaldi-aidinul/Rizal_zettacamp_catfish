@@ -120,7 +120,7 @@ async function bookPurchasing() {
   }
 }
 function cekmap() {
-  let map = new Map(Object.entries(book));
+  // let map = new Map(Object.entries(book));
   let listBookMap = new Map([[1212, "Cinderella"]]); 
   listBookMap.set(32154,'Harry Potter')
   .set(21312, 'Tere Liye')
@@ -139,9 +139,9 @@ function cekmap() {
 }
 
 function cekset(){
-  let akhdani = { name : "Akhdani"}
+  let akhdani = "Akhdani"
   let listBookSet = new Set ();
-  listBookSet.add({name : 'Akhdani'});
+  listBookSet.add('Akhdani');
   listBookSet.add(akhdani)
   const listBookArray = Array.from(listBookSet);
   return listBookArray;
