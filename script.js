@@ -1,117 +1,232 @@
+const express = require('express');
+const { resolve } = require('path');
+const bodyParser = require('body-parser');
+const app = express();
+const port = 4000;
+const jwt = require("jsonwebtoken");
+const { group } = require('console');
+
+function generateAccessToken(payload) {
+  return jwt.sign(payload, 'key', { expiresIn: '1h' });
+}
+
+app.use(bodyParser.json())
+
+app.post('/user/auth', (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  const token = generateAccessToken({ username: username, password: password });
+  res.json(token);
+});
+
+function auth(req, res, next) {
+  const auth = req.headers['authorization'];
+  const token = auth.split(' ')[1];
+  if (token == null) return res.sendStatus(401) ;
+  jwt.verify(token, 'key', (err, user) => {
+    if (err) return res.sendStatus(403);
+    next();
+  })
+}
+
 const song = [
-    {
-        title : "Renegades",
-        artist : "One Ok Rock",
-        genre :  "Rock",
-        duration : "150"
-    },
+  {
+    id : 1,
+    title : "Title1",
+    artist : "One Ok Rock",
+    genre :  "Rock",
+    duration : "7:52"
+  },
 
-    {
-        title : "Heartchache",
-        artist : "One Ok Rock",
-        genre :  "Rock",
-        duration : "310"
-    },
+  {
+    id : 2,
+    title : "Title2",
+    artist : "One Ok Rock",
+    genre :  "Rock",
+    duration : "5:23"
+  },
 
-    {
-        title : "Wolves",
-        artist : "Selena Gomez",
-        genre :  "Pop",
-        duration : "310"
-    },
+  {
+    id : 3,
+    title : "Title3",
+    artist : "Selena Gomez",
+    genre :  "Pop",
+    duration : "5:21"
+  },
 
-    {
-        "title" : "Diamonds",
-        "artist" : "Rihanna",
-        "genre" :  "Pop",
-        "duration" : "210"
-    },
+  {
+    id : 4,
+    title : "Title4",
+    artist : "Rihanna",
+    genre :  "Pop",
+    duration : "5:21"
+  },
 
-    {
-        title : "Renegades",
-        artist : "One Ok Rock",
-        genre :  "Rock",
-        duration : "410"
-    },
+  {
+    id : 5,
+    title : "Title5",
+    artist : "One Ok Rock",
+    genre :  "Rock",
+    duration : "7:21"
+  },
 
-    {
-        title : "Heartchache",
-        artist : "One Ok Rock",
-        genre :  "Rock",
-        duration : "350"
-    },
+  {
+    id : 6,
+    title : "Title6",
+    artist : "One Ok Rock",
+    genre :  "Rock",
+    duration : "6:12"
+  },
 
-    {
-        title : "Wolves",
-        artist : "Selena Gomez",
-        genre :  "Pop",
-        duration : "210"
-    },
+  {
+    id : 7,
+    title : "Title7",
+    artist : "Selena Gomez",
+    genre :  "Pop",
+    duration : "8:21"
+  },
 
-    {
-        "title" : "Diamonds",
-        "artist" : "Rihanna",
-        "genre" :  "Pop",
-        "duration" : "318"
-    }
+  {
+    id : 8,
+    title : "Title8",
+    artist : "Rihanna",
+    genre :  "Pop",
+    duration : "5:21"
+  },
+  {
+    id : 9,
+    title : "Title9",
+    artist : "One Ok Rock",
+    genre :  "Rock",
+    duration : "9:52"
+  },
+
+  {
+    id : 10,
+    title : "Title10",
+    artist : "One Ok Rock",
+    genre :  "Rock",
+    duration : "9:23"
+  },
+
+  {
+    id : 11,
+    title : "Title11",
+    artist : "Selena Gomez",
+    genre :  "Pop",
+    duration : "5:21"
+  },
+
+  {
+    id : 12,
+    title : "Title12",
+    artist : "Rihanna",
+    genre :  "Pop",
+    duration : "5:21"
+  },
+
+  {
+    id : 13,
+    title : "Title13",
+    artist : "One Ok Rock",
+    genre :  "Rock",
+    duration : "7:21"
+  },
+
+  {
+    id : 14,
+    title : "Title14",
+    artist : "One Ok Rock",
+    genre :  "Rock",
+    duration : "6:12"
+  },
+
+  {
+    id : 15,
+    title : "Title15",
+    artist : "Selena Gomez",
+    genre :  "Pop",
+    duration : "8:21"
+  },
+
+  {
+    id : 16,
+    title : "Title16",
+    artist : "Rihanna",
+    genre :  "Pop",
+    duration : "5:21"
+  }
 ]
 
-const groupArtist = (song) => {
-    let artist = []
-    let result = {}
-    for (const iterator of song) {
-        artist.push(iterator.artist)
-    }
-    artist = [...new Set(artist)]
-    artist.forEach(element => {
-        let item = []
-        for (const iterator of song) {
-            if (iterator.artist === element) {
-                item.push(iterator)
-            }
-        }
-        result["Song by artist " + element] = item
-    });
-    return result
+function groupSongArtist() {
+  let groupArtist = []
+  for(i = 0; i < song.length; i++){
+  groupArtist.push(song[i].artist)
+  }
+  const set = new Set(groupArtist);
+
+  const newArr = [...set];
+  let groupOfArtist = {}
+  newArr.forEach (function(value) {
+    groupOfArtist[value] = song.filter((songs) => songs.artist === value)
+  })
+  return groupOfArtist
 }
 
-const groupGenre = (song) => {
-    let genre = []
-    let result = {}
-    for (const iterator of song) {
-        genre.push(iterator.genre)
-    }
-    genre = [...new Set(genre)]
-    genre.forEach(element => {
-        let item = []
-        for (const iterator of song) {
-            if (iterator.genre === element) {
-                item.push(iterator)
-            }
-        }
-        result["Song by genre " + element] = item
-    });
-    return result
+function groupSongGenre() {
+  let groupGenre = []
+  for(i = 0; i < song.length; i++){
+  groupGenre.push(song[i].genre)
+  }
+  const set = new Set(groupGenre);
+
+  const newArr = [...set];
+  let groupOfGenre = {}
+  newArr.forEach (function(value) {
+    groupOfGenre[value] = song.filter((songs) => songs.genre === value)
+  })
+  return groupOfGenre
 }
 
-const groupDuration = (song, duration) => {
-    let group = []
-    for (const iterator of song) {
-        if (iterator.duration < duration) {
-            group.push(iterator)
-        }
+function hehe(){
+  let TotalDuration = 0;
+  let groups = [];
+  // for (let songs in song){
+  for (i = 0; i <= song.length; i++){
+    const random = Math.floor(Math.random() * song.length)
+    const songrandom = groups.some(varl => varl.id === song[random].id)
+    const durationSong = song[random].duration
+    if (songrandom == false){
+      if (TotalDuration <= 3600) {
+        const time = durationSong.split(":");
+        let durationTime = Number(time[0]) * 60 + Number(time[1])
+        TotalDuration += durationTime;
+        groups.push(song[random]);
+      }
+      else {
+        break;
+      }
     }
-    if (group.length === 0) {
-        return "There is no song duration less than 1 hour!"
-    }
-    return group
+  }
+  return groups;
 }
-console.log("\nSong by artist : ");
-console.log(groupArtist(song));
 
-console.log("\nSong by genre : ");
-console.log(groupGenre(song));
+app.get('/groupByArtist', auth, (req, res) =>  {
+  const detail = groupSongArtist(song);
+  // const detailArray = Array.from(detail);
+  console.log(detail)
+  res.send(detail)
+});
 
-let duration = 3600
-console.log("\nSong by duration less than %d in second", duration);
-console.log(groupDuration(song, duration));
+app.get('/groupByGenre', auth, (req, res) =>  {
+  const detail = groupSongGenre(song);
+  console.log(detail)
+  res.send(detail)
+});
+
+app.get('/playlist', auth, (req, res) =>  {
+  const detail = hehe();
+  res.send(detail)
+});
+
+app.listen(port);
