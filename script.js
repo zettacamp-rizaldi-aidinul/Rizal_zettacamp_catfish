@@ -5,7 +5,8 @@ const app = express();
 const port = 4000;
 var fs = require('fs').promises;
 var event = require("events");
-const EventEmitter = new event.EventEmitter();
+const mongoose = require('mongoose');
+const mongoDB = require("./models")
 
 const checkAuth = (req, res, next) => {
   const auth = req.headers["authorization"];
@@ -113,10 +114,12 @@ async function bookPurchasing() {
   const valPrice = calculatePrice(discount,tax);
   const priceTotal = await PriceOfCredit(termOfCredit, valPrice, creditMonth);
   const readFile = await readDataFile();
+  
+const books = mongoose.model("books", booksSchema);
   return {
     valPrice,
     priceTotal,
-    readFile
+    readFile,
   }
 }
 function cekmap() {
@@ -132,7 +135,6 @@ function cekmap() {
   const listBookObjectValue = Array.from(listBookMap.values());
   return {
     listBookObject,
-    // listBookObjectReal,
     listBookObjectKey,
     listBookObjectValue
   }
@@ -147,8 +149,6 @@ function cekset(){
   return listBookArray;
 }
 
-
-// EventEmitter.on('check', readDataFile)
 app.get('/withoutAwait', checkAuth, async (req, res) => {
   // const detail = EventEmitter.emit('check');
   const detail = readDataFile();
@@ -162,7 +162,7 @@ app.get('/withoutAwait', checkAuth, async (req, res) => {
 
 app.get('/withAwait', checkAuth, async (req, res) => {
   const detail = await bookPurchasing();
-  console.log(detail);
+  console.log(findBook);
   res.send(detail)
 });
 
@@ -172,4 +172,35 @@ app.get('/setAndMap', checkAuth, async (req, res) => {
   res.send({detailMap, detailSet})
 })
 
+app.post('/createBook', checkAuth, async (req, res) => {
+  const book1 = books.create({
+  title : "Cinderella",
+  author : "Someone",
+  data_published : '1999-17-26',
+  price : 30000
+  })
+  res.send(book1)
+})
 
+app.get('/readBook', checkAuth, async (req, res) => {
+  const findBook =  await mongoDB.find();
+  res.send(findBook);
+})
+
+app.get('/updateBook', checkAuth, async (req, res) => {
+  const cekData = await mongoDB.books.findById("6356335b26bbda31e48c627d")
+  if(!cekData) return res.status(404).json({message: "Data Tidak Ditemukan"})
+  else {
+    const updateBook = await books.updateOne({_id : "6356335b26bbda31e48c627d"}, {$set: {'updated_at' : Date.now()}});
+    res.send(updateBook);
+  }
+})
+
+app.get('/deleteBook', checkAuth, async (req, res) => {
+  const cekData = await mongoDB.books.findById("6356335b26bbda31e48c627d")
+  if(!cekData) return res.status(404).json({message: "Data Tidak Ditemukan"})
+  else {
+    const deleteBook = await books.deleteOne({_id : "6356335b26bbda31e48c627d"})
+    res.send(deleteBook);
+  }
+})
