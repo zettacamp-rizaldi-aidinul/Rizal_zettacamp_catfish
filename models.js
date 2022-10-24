@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const moment = require('moment-timezone');
+const dateIndonesia = moment.tz(Date.now(), "Asia/Bangkok");
 
 const mongoDB = "mongodb://localhost/zettacamp";
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -11,8 +13,8 @@ const booksSchema = new Schema ({
   author : String,
   date_published : Date,
   price : Number,
-  created_at : { type: Date, default: Date.now() },
-  updated_at : { type: Date, default: Date.now() }
+  created_at : { type: Date, default: dateIndonesia },
+  updated_at : { type: Date, default: dateIndonesia }
 })
 
 const books = mongoose.model('books', booksSchema);

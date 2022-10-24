@@ -7,6 +7,9 @@ var fs = require('fs').promises;
 var event = require("events");
 const mongoose = require('mongoose');
 const mongoDB = require("./models")
+const moment = require('moment-timezone');
+const { title } = require('process');
+const dateThailand = moment.tz(Date.now(), "Asia/Bangkok");
 
 const checkAuth = (req, res, next) => {
   const auth = req.headers["authorization"];
@@ -173,11 +176,11 @@ app.get('/setAndMap', checkAuth, async (req, res) => {
 })
 
 app.post('/createBook', checkAuth, async (req, res) => {
-  const book1 = books.create({
-  title : "Cinderella",
-  author : "Someone",
-  data_published : '1999-17-26',
-  price : 30000
+  const book1 = mongoDB.create({
+    title : "Cinderella",
+    author : "Someone",
+    data_published : '1999-11-26',
+    price : 30000
   })
   res.send(book1)
 })
@@ -187,20 +190,20 @@ app.get('/readBook', checkAuth, async (req, res) => {
   res.send(findBook);
 })
 
-app.get('/updateBook', checkAuth, async (req, res) => {
-  const cekData = await mongoDB.books.findById("6356335b26bbda31e48c627d")
+app.post('/updateBook', checkAuth, async (req, res) => {
+  const cekData = await mongoDB.find({title : "The Star and I"})
   if(!cekData) return res.status(404).json({message: "Data Tidak Ditemukan"})
   else {
-    const updateBook = await books.updateOne({_id : "6356335b26bbda31e48c627d"}, {$set: {'updated_at' : Date.now()}});
+    const updateBook = await mongoDB.updateOne({title : "The Star and I"}, {$set: {'updated_at' : Date.now(), 'author' : "Ilana"}});
     res.send(updateBook);
   }
 })
 
 app.get('/deleteBook', checkAuth, async (req, res) => {
-  const cekData = await mongoDB.books.findById("6356335b26bbda31e48c627d")
+  const cekData = await mongoDB.find({title : "The Star and I"})
   if(!cekData) return res.status(404).json({message: "Data Tidak Ditemukan"})
   else {
-    const deleteBook = await books.deleteOne({_id : "6356335b26bbda31e48c627d"})
+    const deleteBook = await mongoDB.deleteMany({title : "The Star and I"})
     res.send(deleteBook);
   }
 })
