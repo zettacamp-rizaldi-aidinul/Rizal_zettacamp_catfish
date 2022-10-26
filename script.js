@@ -7,8 +7,11 @@ var fs = require('fs').promises;
 var event = require("events");
 const mongoose = require('mongoose');
 const mongoDB = require("./models")
+const bookShelf = require("./bookshelfmodel")
 const moment = require('moment-timezone');
 const { title } = require('process');
+const bookshelf = require('./bookshelfmodel');
+const { read } = require('fs');
 const dateThailand = moment.tz(Date.now(), "Asia/Bangkok");
 
 const checkAuth = (req, res, next) => {
@@ -176,13 +179,72 @@ app.get('/setAndMap', checkAuth, async (req, res) => {
 })
 
 app.post('/createBook', checkAuth, async (req, res) => {
-  const book1 = mongoDB.create({
-    title : "Cinderella",
+  const addData = await mongoDB.create({
+    title : "Lord of The Rings",
     author : "Someone",
     data_published : '1999-11-26',
-    price : 30000
-  })
-  res.send(book1)
+    price : 70000
+  },
+  {
+    title : "Bulan",
+    author : "Tere Liye",
+    data_published : '2015-09-21',
+    price : 60000
+  },
+  {
+    title : "Bintang",
+    author : "Tere Liye",
+    data_published : '2016-11-26',
+    price : 70000
+  },
+  {
+    title : "Matahari",
+    author : "Tere Liye",
+    data_published : '2017-12-29',
+    price : 70000
+  },
+  {
+    title : "Lord of The Rings 2",
+    author : "Someone",
+    data_published : '1999-11-26',
+    price : 80000
+  },
+  {
+    title : "Sepatu Dahlan",
+    author : "Someone",
+    data_published : '2013-11-26',
+    price : 70000
+  },
+  {
+    title : "Surat Dahlan",
+    author : "Someone",
+    data_published : '2015-11-26',
+    price : 120000
+  },
+  {
+    title : "Lord of The Rings",
+    author : "Someone",
+    data_published : '1999-11-26',
+    price : 70000
+  },
+  {
+    title : "Lord of The Rings",
+    author : "Someone",
+    data_published : '1999-11-26',
+    price : 70000
+  },
+  {
+    title : "Lord of The Rings",
+    author : "Someone",
+    data_published : '1999-11-26',
+    price : 90000
+  }
+  );
+  try {
+    res.send(addData)
+  } catch (err) {
+    res.status(500).send(err);
+  }
 })
 
 app.get('/readBook', checkAuth, async (req, res) => {
@@ -205,5 +267,59 @@ app.get('/deleteBook', checkAuth, async (req, res) => {
   else {
     const deleteBook = await mongoDB.deleteMany({title : "The Star and I"})
     res.send(deleteBook);
+  }
+})
+
+app.get('/readbookshelf', checkAuth, async (req, res) => {
+  const readData = await bookShelf.find({})
+  res.send(readData);
+})
+
+app.post('/insertbookshelf', checkAuth, async (req, res) => {
+  const addData = new bookShelf({
+    shelf_name : "Comedy",
+    book_id : ["6356515e37f2895624855136", "6356515e37f2895624855137", "635652bf598ed35458b033d3"]
+  });
+  try {
+    await addData.save()
+    res.send("add bookshelf success")
+  } catch (err) {
+    res.status(500).send(err);
+  }
+})
+
+app.get('/readbookshelf/book1', checkAuth, async (req, res) => {
+  const readData = await bookShelf.find({book_id: {$elemMatch: {$in: ['6356515e37f2895624855136']}}});
+  try {
+    res.send(readData)
+  } catch {
+    res.status(500).send(err);
+  }
+})
+
+app.get('/readbookshelf/book2', checkAuth, async (req, res) => {
+  const readData = await bookShelf.find({book_id: {$elemMatch: {$in: ['6356515e37f2895624855136', '6356515e37f2895624855137']}}})
+  try {
+    res.send(readData)
+  } catch {
+    res.status(500).send(err);
+  }
+})
+
+app.post('/updatebookshelf', checkAuth, async (req, res) => {
+  const cekData = await mongoDB.find({shelf_name : "Comedy"})
+  if(!cekData) return res.status(404).json({message: "Data Tidak Ditemukan"})
+  else {
+    const updateBookshelf = await mongoDB.updateOne({shelf_name : "Comedy"}, {$set: {'updated_at' : Date.now(), shelf_name : "Ilana"}});
+    res.send(updateBookshelf);
+  }
+})
+
+app.delete('/deleteBook', checkAuth, async (req, res) => {
+  const cekData = await mongoDB.find({shelf_name : "Comedy"})
+  if(!cekData) return res.status(404).json({message: "Data Tidak Ditemukan"})
+  else {
+    const deleteBookshelf = await mongoDB.deleteMany({shelf_name : "Comedy"})
+    res.send(deleteBookshelf);
   }
 })
