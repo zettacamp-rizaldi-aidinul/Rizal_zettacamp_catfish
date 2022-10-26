@@ -10,7 +10,6 @@ const mongoDB = require("./models")
 const bookShelf = require("./bookshelfmodel")
 const moment = require('moment-timezone');
 const { title } = require('process');
-const bookshelf = require('./bookshelfmodel');
 const { read } = require('fs');
 const dateThailand = moment.tz(Date.now(), "Asia/Bangkok");
 
@@ -184,62 +183,7 @@ app.post('/createBook', checkAuth, async (req, res) => {
     author : "Someone",
     data_published : '1999-11-26',
     price : 70000
-  },
-  {
-    title : "Bulan",
-    author : "Tere Liye",
-    data_published : '2015-09-21',
-    price : 60000
-  },
-  {
-    title : "Bintang",
-    author : "Tere Liye",
-    data_published : '2016-11-26',
-    price : 70000
-  },
-  {
-    title : "Matahari",
-    author : "Tere Liye",
-    data_published : '2017-12-29',
-    price : 70000
-  },
-  {
-    title : "Lord of The Rings 2",
-    author : "Someone",
-    data_published : '1999-11-26',
-    price : 80000
-  },
-  {
-    title : "Sepatu Dahlan",
-    author : "Someone",
-    data_published : '2013-11-26',
-    price : 70000
-  },
-  {
-    title : "Surat Dahlan",
-    author : "Someone",
-    data_published : '2015-11-26',
-    price : 120000
-  },
-  {
-    title : "Lord of The Rings",
-    author : "Someone",
-    data_published : '1999-11-26',
-    price : 70000
-  },
-  {
-    title : "Lord of The Rings",
-    author : "Someone",
-    data_published : '1999-11-26',
-    price : 70000
-  },
-  {
-    title : "Lord of The Rings",
-    author : "Someone",
-    data_published : '1999-11-26',
-    price : 90000
-  }
-  );
+  });
   try {
     res.send(addData)
   } catch (err) {
@@ -271,18 +215,18 @@ app.get('/deleteBook', checkAuth, async (req, res) => {
 })
 
 app.get('/readbookshelf', checkAuth, async (req, res) => {
-  const readData = await bookShelf.find({})
+  const readData = await bookShelf.find()
   res.send(readData);
 })
 
 app.post('/insertbookshelf', checkAuth, async (req, res) => {
   const addData = new bookShelf({
-    shelf_name : "Comedy",
-    book_id : ["6356515e37f2895624855136", "6356515e37f2895624855137", "635652bf598ed35458b033d3"]
+    shelf_name : "Tere Liye",
+    book_id : ["635652bf598ed35458b033d8", "63589556a0a72840a8f30394", "63589556a0a72840a8f30395"]
   });
   try {
-    await addData.save()
-    res.send("add bookshelf success")
+    const addingData = await addData.save()
+    res.send(addingData)
   } catch (err) {
     res.status(500).send(err);
   }
@@ -297,8 +241,9 @@ app.get('/readbookshelf/book1', checkAuth, async (req, res) => {
   }
 })
 
-app.get('/readbookshelf/book2', checkAuth, async (req, res) => {
-  const readData = await bookShelf.find({book_id: {$elemMatch: {$in: ['6356515e37f2895624855136', '6356515e37f2895624855137']}}})
+app.get('/readbookshelf/book2/:book_id', checkAuth, async (req, res) => {
+  console.log(req.params.book_id)
+  const readData = await bookShelf.find({book_id: {$elemMatch: {$in: [req.params.book_id]}}})
   try {
     res.send(readData)
   } catch {
@@ -307,19 +252,19 @@ app.get('/readbookshelf/book2', checkAuth, async (req, res) => {
 })
 
 app.post('/updatebookshelf', checkAuth, async (req, res) => {
-  const cekData = await mongoDB.find({shelf_name : "Comedy"})
+  const cekData = await bookShelf.find({shelf_name : "Ilana"})
   if(!cekData) return res.status(404).json({message: "Data Tidak Ditemukan"})
   else {
-    const updateBookshelf = await mongoDB.updateOne({shelf_name : "Comedy"}, {$set: {'updated_at' : Date.now(), shelf_name : "Ilana"}});
+    const updateBookshelf = await bookShelf.updateOne({shelf_name : "Ilana"}, {$set: {'updated_at' : Date.now(), shelf_name : "Ilana"}}, {new : true});
     res.send(updateBookshelf);
   }
 })
 
-app.delete('/deleteBook', checkAuth, async (req, res) => {
-  const cekData = await mongoDB.find({shelf_name : "Comedy"})
+app.delete('/deletebookhelf', checkAuth, async (req, res) => {
+  const cekData = await bookShelf.find({shelf_name : "Comedy"})
   if(!cekData) return res.status(404).json({message: "Data Tidak Ditemukan"})
   else {
-    const deleteBookshelf = await mongoDB.deleteMany({shelf_name : "Comedy"})
+    const deleteBookshelf = await bookShelf.deleteMany({shelf_name : "Comedy"})
     res.send(deleteBookshelf);
   }
 })
