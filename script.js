@@ -304,7 +304,7 @@ app.post('/insertbookshelf', checkAuth, async (req, res) => {
 })
 
 app.get('/readbookshelf/book1', checkAuth, async (req, res) => {
-  const readData = await bookShelf.find({book_id: {$elemMatch: {$in: ['6356515e37f2895624855136']}}});
+  const readData = await bookShelf.find({book_ids: { $elemMatch: {stock: { $lte: 15}} }});
   try {
     res.send(readData)
   } catch {
@@ -313,7 +313,7 @@ app.get('/readbookshelf/book1', checkAuth, async (req, res) => {
 })
 
 app.get('/readbookshelf/book2', checkAuth, async (req, res) => {
-  const readData = await bookShelf.find({book_id: {$elemMatch: {$in: ['6356515e37f2895624855136', '6356515e37f2895624855137']}}})
+  const readData = await bookShelf.find({book_ids: { $elemMatch: {stock: { $gte: 8}, stock: {$lte : 15}} }})
   try {
     res.send(readData)
   } catch {
