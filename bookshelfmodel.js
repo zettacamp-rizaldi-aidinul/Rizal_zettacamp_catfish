@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const moment = require('moment-timezone');
+const { ObjectId } = require('mongoose');
 const dateIndonesia = moment.tz(Date.now(), "Asia/Bangkok");
 
 const mongoDB = "mongodb://localhost/zettacamp";
@@ -10,10 +11,13 @@ const Schema = mongoose.Schema;
 
 const bookshelfSchema = new Schema ({
     shelf_name : String,
-    book_id : [String],
-    created_at : { type: Date, default: dateIndonesia },
-    updated_at : { type: Date, default: dateIndonesia }
-  })
+    book_ids : [{
+      book_id : ObjectId,
+      added_date : {type: Date, default: dateIndonesia},
+      stock : Number
+    }],
+    date : [{date : String, time : String}],
+  }, {timestamps: true})
   
 const bookshelf = mongoose.model('bookshelf', bookshelfSchema)
 module.exports = bookshelf;

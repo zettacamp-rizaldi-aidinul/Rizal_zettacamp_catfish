@@ -8,11 +8,13 @@ var event = require("events");
 const mongoose = require('mongoose');
 const mongoDB = require("./models")
 const bookShelf = require("./bookshelfmodel")
-const moment = require('moment-timezone');
 const { title } = require('process');
-const bookshelf = require('./bookshelfmodel');
 const { read } = require('fs');
-const dateThailand = moment.tz(Date.now(), "Asia/Bangkok");
+const bookshelf = require('./bookshelfmodel');
+
+const date = new Date()
+const currentDate = date.getFullYear() + "/" + (date.getMonth()+1) + "/" + date.getDate();
+const dateTime = date.getHours() + ":" + date.getMinutes() + ":" + date .getSeconds();
 
 const checkAuth = (req, res, next) => {
   const auth = req.headers["authorization"];
@@ -261,7 +263,7 @@ app.post('/updateBook', checkAuth, async (req, res) => {
   }
 })
 
-app.get('/deleteBook', checkAuth, async (req, res) => {
+app.delete('/deleteBook', checkAuth, async (req, res) => {
   const cekData = await mongoDB.find({title : "The Star and I"})
   if(!cekData) return res.status(404).json({message: "Data Tidak Ditemukan"})
   else {
@@ -277,8 +279,21 @@ app.get('/readbookshelf', checkAuth, async (req, res) => {
 
 app.post('/insertbookshelf', checkAuth, async (req, res) => {
   const addData = new bookShelf({
-    shelf_name : "Comedy",
-    book_id : ["6356515e37f2895624855136", "6356515e37f2895624855137", "635652bf598ed35458b033d3"]
+    shelf_name : "Lord of The Rings",
+    book_ids : [{
+      book_id : "63589556a0a72840a8f30393",
+      stock : 32
+    },{
+      book_id : "63589556a0a72840a8f30397",
+      stock : 15
+    },{
+      book_id : "63589556a0a72840a8f3039a",
+      stock : 9 
+    },{
+      book_id : "63589556a0a72840a8f3039b",
+      stock : 9
+    }],
+    date : {date : currentDate, time : dateTime}
   });
   try {
     await addData.save()
@@ -307,19 +322,19 @@ app.get('/readbookshelf/book2', checkAuth, async (req, res) => {
 })
 
 app.post('/updatebookshelf', checkAuth, async (req, res) => {
-  const cekData = await mongoDB.find({shelf_name : "Comedy"})
-  if(!cekData) return res.status(404).json({message: "Data Tidak Ditemukan"})
-  else {
-    const updateBookshelf = await mongoDB.updateOne({shelf_name : "Comedy"}, {$set: {'updated_at' : Date.now(), shelf_name : "Ilana"}});
+  const updateBookshelf = await bookShelf.updateMany({}, {$set: {"book_ids.$[temps].stock" : 10}}, {arrayFilters : [{"temps.stock" : {$lte : 10}}]});
+  try {
     res.send(updateBookshelf);
+  } catch {
+    res.status(500).send(err);
   }
 })
 
-app.delete('/deleteBook', checkAuth, async (req, res) => {
-  const cekData = await mongoDB.find({shelf_name : "Comedy"})
+app.delete('/deletebookshelf', checkAuth, async (req, res) => {
+  const cekData = await bookShelf.find({shelf_name : "Comedy"})
   if(!cekData) return res.status(404).json({message: "Data Tidak Ditemukan"})
   else {
-    const deleteBookshelf = await mongoDB.deleteMany({shelf_name : "Comedy"})
+    const deleteBookshelf = await bookShelf.deleteMany({shelf_name : "Comedy"})
     res.send(deleteBookshelf);
   }
 })
