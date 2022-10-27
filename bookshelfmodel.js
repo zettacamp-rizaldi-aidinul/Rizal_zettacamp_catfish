@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const moment = require('moment-timezone');
 const { ObjectId } = require('mongoose');
 const dateIndonesia = moment.tz(Date.now(), "Asia/Bangkok");
+const date = new Date()
+const currentDate = date.getFullYear() + "/" + (date.getMonth()+1) + "/" + date.getDate();
+const dateTime = date.getHours() + ":" + date.getMinutes() + ":" + date .getSeconds();
+
 
 const mongoDB = "mongodb://localhost/zettacamp";
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -16,7 +20,7 @@ const bookshelfSchema = new Schema ({
       added_date : {type: Date, default: dateIndonesia},
       stock : Number
     }],
-    date : [{date : String, time : String}],
+    date : [{date : {type: String, default : currentDate}, time : {type: String, default : dateTime}}],
   }, {timestamps: true})
   
 const bookshelf = mongoose.model('bookshelf', bookshelfSchema)

@@ -13,9 +13,10 @@ const { title } = require('process');
 const { read } = require('fs');
 const bookshelf = require('./bookshelfmodel');
 
-const date = new Date()
-const currentDate = date.getFullYear() + "/" + (date.getMonth()+1) + "/" + date.getDate();
-const dateTime = date.getHours() + ":" + date.getMinutes() + ":" + date .getSeconds();
+const bodyParser = require('body-parser');
+const { get } = require('http');
+app.use(bodyParser.json())
+
 
 const checkAuth = (req, res, next) => {
   const auth = req.headers["authorization"];
@@ -255,7 +256,7 @@ app.get('/readBook', checkAuth, async (req, res) => {
   res.send(findBook);
 })
 
-app.post('/updateBook', checkAuth, async (req, res) => {
+app.patch('/updateBook', checkAuth, async (req, res) => {
   const cekData = await mongoDB.find({title : "The Star and I"})
   if(!cekData) return res.status(404).json({message: "Data Tidak Ditemukan"})
   else {
@@ -274,28 +275,12 @@ app.delete('/deleteBook', checkAuth, async (req, res) => {
 })
 
 app.get('/readbookshelf', checkAuth, async (req, res) => {
-  const readData = await bookShelf.findOne({})
+  const readData = await bookShelf.find({})
   res.send(readData);
 })
 
 app.post('/insertbookshelf', checkAuth, async (req, res) => {
-  const addData = new bookShelf({
-    shelf_name : "Lord of The Rings III",
-    book_ids : [{
-      book_id : "63589556a0a72840a8f30393",
-      stock : 32
-    },{
-      book_id : "63589556a0a72840a8f30397",
-      stock : 15
-    },{
-      book_id : "63589556a0a72840a8f3039a",
-      stock : 9 
-    },{
-      book_id : "63589556a0a72840a8f3039b",
-      stock : 9
-    }],
-    date : {date : currentDate, time : dateTime}
-  });
+  const addData = new bookShelf(req.body);
   try {
     const addingData = await addData.save()
     res.send(addingData)
@@ -322,7 +307,7 @@ app.get('/readbookshelf/book2', checkAuth, async (req, res) => {
   }
 })
 
-app.post('/updatebookshelf', checkAuth, async (req, res) => {
+app.patch('/updatebookshelf', checkAuth, async (req, res) => {
   const updateBookshelf = await bookShelf.updateMany({}, {$set: {"book_ids.$[temps].added_date" : moment().subtract(10, 'days').calendar()}}, {arrayFilters : [{"temps.stock" : {$eq : 20}}]});
   try {
     res.send(updateBookshelf);
@@ -332,10 +317,25 @@ app.post('/updatebookshelf', checkAuth, async (req, res) => {
 })
 
 app.delete('/deletebookshelf', checkAuth, async (req, res) => {
-  const cekData = await bookShelf.find({shelf_name : "Comedy"})
+  const cekData = await bookShelf.find({shelf_name : req.query.id})
   if(!cekData) return res.status(404).json({message: "Data Tidak Ditemukan"})
   else {
-    const deleteBookshelf = await bookShelf.deleteMany({shelf_name : "Comedy"})
+    const deleteBookshelf = await bookShelf.deleteMany({shelf_name : req.query.id})
     res.send(deleteBookshelf);
   }
+})
+
+app.get('/projection', checkAuth, async (req, res) => {
+  const aggCursor = await bookShelf.aggregate([{$project: {_id: 0, shelf_name: 1, added_book : req.query.id}}]);
+  res.send(aggCursor)
+})
+
+app.get('/addfields', checkAuth, async (req, res) => {
+  const addTotalStock = await bookShelf.aggregate([{$addFields: {totalStock: {$sum: req.query.stock}}}])
+  res.send(addTotalStock)
+})
+
+app.get('/unwind/:id', checkAuth, async (req, res) => {
+  const unwind = await bookShelf.aggregate([{$unwind: req.params.id}])
+  res.send(unwind)
 })
