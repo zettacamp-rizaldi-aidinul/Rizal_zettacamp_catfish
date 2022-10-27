@@ -8,6 +8,7 @@ var event = require("events");
 const mongoose = require('mongoose');
 const mongoDB = require("./models")
 const bookShelf = require("./bookshelfmodel")
+const moment = require('moment');
 const { title } = require('process');
 const { read } = require('fs');
 const bookshelf = require('./bookshelfmodel');
@@ -273,13 +274,13 @@ app.delete('/deleteBook', checkAuth, async (req, res) => {
 })
 
 app.get('/readbookshelf', checkAuth, async (req, res) => {
-  const readData = await bookShelf.find({})
+  const readData = await bookShelf.findOne({})
   res.send(readData);
 })
 
 app.post('/insertbookshelf', checkAuth, async (req, res) => {
   const addData = new bookShelf({
-    shelf_name : "Lord of The Rings",
+    shelf_name : "Lord of The Rings III",
     book_ids : [{
       book_id : "63589556a0a72840a8f30393",
       stock : 32
@@ -296,8 +297,8 @@ app.post('/insertbookshelf', checkAuth, async (req, res) => {
     date : {date : currentDate, time : dateTime}
   });
   try {
-    await addData.save()
-    res.send("add bookshelf success")
+    const addingData = await addData.save()
+    res.send(addingData)
   } catch (err) {
     res.status(500).send(err);
   }
@@ -322,7 +323,7 @@ app.get('/readbookshelf/book2', checkAuth, async (req, res) => {
 })
 
 app.post('/updatebookshelf', checkAuth, async (req, res) => {
-  const updateBookshelf = await bookShelf.updateMany({}, {$set: {"book_ids.$[temps].stock" : 10}}, {arrayFilters : [{"temps.stock" : {$lte : 10}}]});
+  const updateBookshelf = await bookShelf.updateMany({}, {$set: {"book_ids.$[temps].added_date" : moment().subtract(10, 'days').calendar()}}, {arrayFilters : [{"temps.stock" : {$eq : 20}}]});
   try {
     res.send(updateBookshelf);
   } catch {

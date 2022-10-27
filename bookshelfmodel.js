@@ -12,7 +12,7 @@ const Schema = mongoose.Schema;
 const bookshelfSchema = new Schema ({
     shelf_name : String,
     book_ids : [{
-      book_id : ObjectId,
+      book_id : mongoose.Types.ObjectId,
       added_date : {type: Date, default: dateIndonesia},
       stock : Number
     }],
