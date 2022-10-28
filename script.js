@@ -339,3 +339,33 @@ app.get('/unwind/:id', checkAuth, async (req, res) => {
   const unwind = await bookShelf.aggregate([{$unwind: req.params.id}])
   res.send(unwind)
 })
+
+app.get('/match', checkAuth, async (req, res) => {
+  const match = await bookShelf.aggregate([{$match: {"book_ids.stock": {$gt: 7, $lt: 15}}}])
+  res.send(match)
+})
+
+app.get('/sorting', checkAuth, async (req, res) => {
+  //terbaru
+  const sorting = await bookShelf.aggregate([{$sort: {"createdAt": -1}}])
+  res.send(sorting)
+})
+
+app.get('/lookup/:id', checkAuth, async (req, res) => {
+  const lookup = await bookShelf.aggregate([
+    {$unwind: req.params.id},
+    {$lookup: {
+    from: "books",
+    localField: "book_ids.book_id",
+    foreignField: "_id",
+    as: "detail"}},
+    {$project: {_id: 0, shelf_name: 1, added_book : req.params.id, detail: 1}}
+  ])
+  res.send(lookup)
+})
+
+app.get('/concat', checkAuth, async (req, res) => {
+  const concat = await bookShelf.aggregate([{$project: {_id: 0, shelf_name: 1, id_book : req.query.id, 
+    addedTime: {$concatArrays: ["$date.date", "$date.time"]}}}])
+  res.send(concat)
+})
