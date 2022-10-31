@@ -20,7 +20,8 @@ const bookshelfSchema = new Schema ({
       added_date : {type: Date, default: dateIndonesia},
       stock : Number
     }],
-    date : [{date : {type: String, default : currentDate}, time : {type: String, default : dateTime}}],
+    date : [{date : {type: String, default : currentDate}, time : {type: String, default : dateTime}},
+    ],
   }, {timestamps: true})
   
 const bookshelf = mongoose.model('bookshelf', bookshelfSchema)

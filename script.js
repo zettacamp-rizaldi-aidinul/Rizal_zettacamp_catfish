@@ -15,6 +15,7 @@ const bookshelf = require('./bookshelfmodel');
 
 const bodyParser = require('body-parser');
 const { get } = require('http');
+const { _applyPlugins } = require('mongoose');
 app.use(bodyParser.json())
 
 
@@ -368,4 +369,43 @@ app.get('/concat', checkAuth, async (req, res) => {
   const concat = await bookShelf.aggregate([{$project: {_id: 0, shelf_name: 1, id_book : req.query.id, 
     addedTime: {$concatArrays: ["$date.date", "$date.time"]}}}])
   res.send(concat)
+})
+
+app.get('/pagination', checkAuth, async (req, res) => {
+  const pagination = await mongoDB.aggregate([
+    {$facet: 
+        {
+            "categoriedByTitle":[
+                {
+                    $group: {_id: '$title', total: {$sum: 1}},
+                },
+                {$sort: {total: -1}},
+                {$skip: ((+req.query.page*+req.query.limit))},
+                {$limit: +req.query.limit}
+            ],
+            "categoriedByPrice":[
+                {
+                    $bucket: {
+                        groupBy: '$price',
+                        boundaries: [10000, 50000, 100000],
+                        default: "Other",
+                        output: {
+                            "count": {$sum:1},
+                            "detail_book": {
+                                $push: {
+                                    "title": '$title',
+                                    "author" : '$author',
+                                    "price": '$price',
+                                    "createdAt": '$created_at',
+                                    "updatedAt": '$updated_at'
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }  
+    },
+  ])
+  res.send(pagination)
 })
