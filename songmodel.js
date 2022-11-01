@@ -7,6 +7,7 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 const Schema = mongoose.Schema;
 const songsSchema = new Schema ({
+    id: Number,
     title: String,
     artist: String,
     genre: String,

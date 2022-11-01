@@ -232,7 +232,7 @@ app.get('/playlist', auth, (req, res) =>  {
 });
 
 app.post('/song', auth, async(req, res) => {
-  const createSong = new addSong(req.body);
+  const createSong = new songs(req.body);
   try {
     const addingSong = await createSong.save()
     res.send(addingSong)
@@ -241,12 +241,137 @@ app.post('/song', auth, async(req, res) => {
   }
 })
 
-app.get('/song', auth,  async(res) => {
-  const readSong = await songs.find()
-  res.send(readSong)
+app.get('/song', auth, async (req, res) => {
+  const readData = await songs.find()
+  res.send(readData)
 })
 
+app.patch('/song', auth, async (req, res) => {
+  const updateData = await songs.updateMany({_id:"6360972cf642af3578aef999"}, {$set: {_id: 1}});
+  try {
+    res.send(updateData);
+  } catch (err) {
+    res.status(500).send(err);}
+})
 
+app.delete('/song', auth, async (req, res) => {
+  const deleteData = await songs.deleteMany({_id: req.query.delete})
+  try {
+    res.send(deleteData);
+  } catch (err) {
+    res.status(500).send(err);}
+})
 
+app.post('/playlists', auth, async(req, res) => {
+  const createPlaylist = new playlist(req.body);
+  try {
+    const addingPlaylist = await createPlaylist.save()
+    res.send(addingPlaylist)
+  }catch(err){
+    res.status(500).send(err);
+  }
+})
+
+app.get('/playlists', auth, async (req, res) => {
+  const readData = await playlist.find()
+  res.send(readData)
+})
+
+app.patch('/playlists', auth, async (req, res) => {
+  const updateData = await playlist.updateMany({_id: req.query.update}, {$set: {title: req.query.title}});
+  try {
+    res.send(updateData);
+  } catch (err) {
+    res.status(500).send(err);}
+})
+
+app.delete('/playlists', auth, async (req, res) => {
+  const deleteData = await playlist.deleteMany({_id: req.query.delete})
+  try {
+    res.send(deleteData);
+  } catch (err) {
+    res.status(500).send(err);}
+})
+
+app.get('/song/process',auth, async (req, res) => {
+  const processMusic = await songs.aggregate([
+    {$facet:
+      {
+        "SongByGenre": [{
+            $match: {
+                genre: req.body.genre
+            }
+        },{
+            $sort: {
+                createdAt: -1
+            }
+        },{
+            $skip: (+req.query.limit*+req.query.page)
+        },{
+            $limit: +req.query.limit
+        }],
+        "SongByArtist": [{
+            $match: {
+                artist: req.body.artist
+            }
+        },{
+            $sort: {
+                createdAt: -1
+            }
+        },{
+            $skip: (+req.query.limit*+req.query.page)
+        },{
+            $limit: +req.query.limit
+        }],
+        "TotalSong": [{
+            $group: {_id: "$_id", total: {$sum: 1}}
+          },{
+            $sort: {
+              createdAt: -1
+            }
+          },{
+              $skip: (+req.query.limit*+req.query.page)
+          },{
+              $limit: +req.query.limit
+          }
+        ]
+      }
+    }    
+  ])
+  res.send(processMusic)
+})
+
+app.get('/playlists/process', auth, async (req, res) => {
+  const processPlaylist = await playlist.aggregate([
+    {$facet:
+      {
+        "PlaylistMoreThan1Hour":[{
+                $match: {
+                    duration: {$gte: 3600}
+                }
+            },{
+                $unwind: "$song_ids"
+            },{
+                $lookup: {
+                    from: "songs",
+                    localField: "song_ids",
+                    foreignField: "_id",
+                    as: "id_song"
+                }
+            },{
+                $project: {
+                    _id: 0, id_song: 1, title: "$title", duration: "$duration"
+                }
+            },{
+                $sort: {createdAt: -1}
+            },{
+                $skip: (0*3)
+            },{
+                $limit: 3
+            }]
+        }
+    }
+])
+})
 
 app.listen(port);

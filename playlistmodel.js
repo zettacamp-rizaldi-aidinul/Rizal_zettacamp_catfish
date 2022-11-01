@@ -9,9 +9,7 @@ const Schema = mongoose.Schema;
 const playlistsSchema = new Schema ({
     title: String,
     duration: Number,
-    song_ids: {
-        id_song: mongoose.Types.ObjectId
-    }
+    song_ids: [Number]
 }, {timestamps: true})
 
 const playlists = mongoose.model('playlists', playlistsSchema)
