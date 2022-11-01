@@ -4,7 +4,9 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = 4000;
 const jwt = require("jsonwebtoken");
-const { group } = require('console');
+const mongoose = require('mongoose');
+const songs = require("./songmodel");
+const playlist = require("./playlistmodel")
 
 function generateAccessToken(payload) {
   return jwt.sign(payload, 'key', { expiresIn: '1h' });
@@ -228,5 +230,23 @@ app.get('/playlist', auth, (req, res) =>  {
   const detail = hehe();
   res.send(detail)
 });
+
+app.post('/song', auth, async(req, res) => {
+  const createSong = new addSong(req.body);
+  try {
+    const addingSong = await createSong.save()
+    res.send(addingSong)
+  }catch(err){
+    res.status(500).send(err);
+  }
+})
+
+app.get('/song', auth,  async(res) => {
+  const readSong = await songs.find()
+  res.send(readSong)
+})
+
+
+
 
 app.listen(port);
