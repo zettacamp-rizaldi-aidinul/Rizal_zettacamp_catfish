@@ -190,26 +190,28 @@ function groupSongGenre() {
   return groupOfGenre
 }
 
-function hehe(){
+async function hehe(){
+  const songCheck = await songs.find()
   let TotalDuration = 0;
   let groups = [];
   // for (let songs in song){
-  for (i = 0; i <= song.length; i++){
-    const random = Math.floor(Math.random() * song.length)
-    const songrandom = groups.some(varl => varl.id === song[random].id)
-    const durationSong = song[random].duration
+  for (i = 0; i <= songCheck.length; i++){
+    const random = Math.floor(Math.random() * songCheck.length)
+    const songrandom = groups.some(varl => varl.id === songCheck[random].id)
+    const durationSong = songCheck[random].duration
     if (songrandom == false){
       if (TotalDuration <= 3600) {
         const time = durationSong.split(":");
         let durationTime = Number(time[0]) * 60 + Number(time[1])
         TotalDuration += durationTime;
-        groups.push(song[random]);
+        groups.push(songCheck[random]);
       }
       else {
         break;
       }
     }
   }
+
   return groups;
 }
 
@@ -226,8 +228,9 @@ app.get('/groupByGenre', auth, (req, res) =>  {
   res.send(detail)
 });
 
-app.get('/playlist', auth, (req, res) =>  {
-  const detail = hehe();
+app.get('/playlist', auth, async (req, res) =>  {
+  const detail = await hehe();
+  console.log(detail)
   res.send(detail)
 });
 
@@ -242,7 +245,7 @@ app.post('/song', auth, async(req, res) => {
 })
 
 app.get('/song', auth, async (req, res) => {
-  const readData = await songs.find()
+  const readData = await songs.find({}).sort({id:1})
   res.send(readData)
 })
 
@@ -278,7 +281,7 @@ app.get('/playlists', auth, async (req, res) => {
 })
 
 app.patch('/playlists', auth, async (req, res) => {
-  const updateData = await playlist.updateMany({_id: req.query.update}, {$set: {title: req.query.title}});
+  const updateData = await playlist.updateMany({_id: req.query.update}, {$set: {song_ids: [1, 2, 5, 6, 9]}});
   try {
     res.send(updateData);
   } catch (err) {
@@ -295,13 +298,13 @@ app.delete('/playlists', auth, async (req, res) => {
 
 app.get('/song/process',auth, async (req, res) => {
   const processMusic = await songs.aggregate([
+    {$match: {
+      genre: req.body.genre
+    }},
     {$facet:
       {
-        "SongByGenre": [{
-            $match: {
-                genre: req.body.genre
-            }
-        },{
+        "Data": [
+          {
             $sort: {
                 createdAt: -1
             }
@@ -310,33 +313,10 @@ app.get('/song/process',auth, async (req, res) => {
         },{
             $limit: +req.query.limit
         }],
-        "SongByArtist": [{
-            $match: {
-                artist: req.body.artist
-            }
-        },{
-            $sort: {
-                createdAt: -1
-            }
-        },{
-            $skip: (+req.query.limit*+req.query.page)
-        },{
-            $limit: +req.query.limit
-        }],
-        "TotalSong": [{
-            $group: {_id: "$_id", total: {$sum: 1}}
-          },{
-            $sort: {
-              createdAt: -1
-            }
-          },{
-              $skip: (+req.query.limit*+req.query.page)
-          },{
-              $limit: +req.query.limit
-          }
-        ]
-      }
-    }    
+        "Total Song": [{
+            $group: {_id: "$genre", count: {$sum: 1}}
+      }]
+    }}
   ])
   res.send(processMusic)
 })
@@ -355,23 +335,26 @@ app.get('/playlists/process', auth, async (req, res) => {
                 $lookup: {
                     from: "songs",
                     localField: "song_ids",
-                    foreignField: "_id",
+                    foreignField: "id",
                     as: "id_song"
                 }
+            },{
+                $match : {'id_song.genre': "Rock"}
             },{
                 $project: {
                     _id: 0, id_song: 1, title: "$title", duration: "$duration"
                 }
             },{
-                $sort: {createdAt: -1}
+                $sort: {id: 1}
             },{
-                $skip: (0*3)
+                $skip: (+req.query.limit*+req.query.page)
             },{
-                $limit: 3
+                $limit: +req.query.limit
             }]
         }
     }
-])
+  ])
+  res.send(processPlaylist)
 })
 
 app.listen(port);
