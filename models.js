@@ -3,7 +3,7 @@ const moment = require('moment-timezone');
 const dateIndonesia = moment.tz(Date.now(), "Asia/Bangkok");
 
 const mongoDB = "mongodb://localhost/zettacamp";
-mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 

@@ -8,11 +8,11 @@ const mongoose = require('mongoose');
 const mongoDB = require("./models")
 const bookShelf = require("./bookshelfmodel")
 const moment = require('moment');
-import { ApolloServer } from '@apollo/server';
-import { startStandaloneServer } from '@apollo/server/standalone';
 
+const typeDefs = require('./schema')
+const resolvers = require('./resolvers')
 const bodyParser = require('body-parser');
-const { _applyPlugins } = require('mongoose');
+const { ApolloServer } = require('apollo-server-express');
 app.use(bodyParser.json())
 
 
@@ -111,12 +111,6 @@ async function PriceOfCredit(termOfCredit, valPrice, creditMonth) {
   return credit
 }
 
-
-function readDataFile (){
-  const result = fs.readFile('./file.txt', 'utf-8').catch((error) => console.log(error.message));
-  return result
-}
-
 async function bookPurchasing() {
   
   const valPrice = calculatePrice(discount,tax);
@@ -130,6 +124,13 @@ const books = mongoose.model("books", booksSchema);
     readFile,
   }
 }
+
+function readDataFile (){
+  const result = fs.readFile('./file.txt', 'utf-8').catch((error) => console.log(error.message));
+  return result
+}
+
+
 function cekmap() {
   // let map = new Map(Object.entries(book));
   let listBookMap = new Map([[1212, "Cinderella"]]); 
@@ -406,3 +407,15 @@ app.get('/pagination', checkAuth, async (req, res) => {
   ])
   res.send(pagination)
 })
+
+// console.log(typeDefs)
+const server = new ApolloServer({typeDefs, resolvers});
+server.start().then(res => {
+      server.applyMiddleware({
+          app
+      });
+      // run port 
+      app.listen({port:5000}, () => {
+          console.log(`App running in port`);
+      });
+  });

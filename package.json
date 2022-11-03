@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "testing.js",
+  "main": "script.js",
   "dependencies": {
     "@apollo/server": "^4.0.5",
     "apollo-server-express": "^3.10.4",
