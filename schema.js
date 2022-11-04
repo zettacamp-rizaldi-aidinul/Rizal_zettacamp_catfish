@@ -13,6 +13,8 @@ const typeDefs = gql`
   }
 
   type calculatePrice{
+    stock: Int
+    amount: Int
     bookPrice: Float
     totalDiscount: Float
     totalTax: Float
@@ -20,10 +22,43 @@ const typeDefs = gql`
     totalPrice: Float
   }
 
+  type valPrice {
+    bookPrice: Float
+    totalDiscount: Float
+    totalTax: Float
+    priceAfterDiscount: Float
+    totalPrice: Float
+  }
+
+  type priceTotal {
+    month: Int
+    creditPrice: Float,
+    paylater: Float
+  }
+
+  type Total {
+    Price: valPrice
+    TotalPrice: [priceTotal]
+  }
+
+  type TotalBook{
+    count: Int
+  }
+
+  type pagination{
+    book: [Book]
+    count: [TotalBook]
+  }
+
+  input paginationInput{
+    limit: Int
+    skip: Int
+  }
+
   type Query {
-    getAllBooks: [Book]
+    getAllBooks(pagination2:paginationInput): [pagination]
     getBook(_id: ID!): Book
-    calculatePrice(_id: ID!): Book
+    getPagination(limit: Int, skip: Int): [pagination]  
   }
 
   type Mutation {
@@ -42,7 +77,9 @@ const typeDefs = gql`
 
     deleteBook(_id: ID): Boolean
 
-    calculatePrice(
+    calculatePrices(
+      stock: Int
+      amount: Int
       bookPrice: Float
       totalDiscount: Float
       totalTax: Float

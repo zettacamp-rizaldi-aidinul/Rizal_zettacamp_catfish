@@ -1,22 +1,27 @@
 const BookModel = require('./models')
-const stock = 20
-const amount = 15
-const discount = 0.05;
-const tax = 0.1;
-const creditMonth = 0.01;
-const termOfCredit = 3;
-let sisa = 0;
 
-async function getAllBooks() {
-    const book = await BookModel.find()
-    // dateString = dataBooks.date_published.toString()
-    // dataBooks.date_published = dateString
+async function getAllBooks(_, {pagination2}) {
+    const book = await BookModel.aggregate([
+        {$facet: 
+            {
+                "Books":[
+                    {$skip: (pagination2.skip*pagination2.limit)},
+                    {$limit: pagination2.limit}
+                ],
+                "Page":[
+                    {$group: {_id: null, count: {$sum: 1}}}
+                ]
+            }
+        }
+    ])
+    console.log(book[0].Books)
     return book
         
 }
 
 async function getBook(_, args) {
-    const book = await BookModel.findById(args.id)
+    const book = await BookModel.findById(args._id)
+    console.log(book)
     return book
 }
 
@@ -37,43 +42,38 @@ async function deleteBook (_, args){
     else return false
 }
 
-async function calculatePrice (_, args){
-    const book = await BookModel.findById("63589556a0a72840a8f3039c")
-    const priceBook = 0;
-    
-    for (i = 1; i <= stock; i++) {
-        priceBook = priceBook + book.price;
-        if (amount > 0) {
-            amount--;
-            sisa = stock - i;
+async function getPagination(_, {limit, skip}){
+    const book = await BookModel.aggregate([
+        {$facet: 
+            {
+                "Books":[
+                    {$skip: (skip*limit)},
+                    {$limit: limit}
+                ],
+                "Page":[
+                    {$group: {_id: null, count: {$sum: 1}}}
+                ]
+            }
         }
-        else {
-            break;
-        }
-    }
-    let totDiscount = priceBook * discount;
-    let totTax = priceBook - (totDiscount * tax);
-    let varPrice = {
-        bookPrice : priceBook,
-        totalDiscount : totDiscount,
-        totalTax : totTax,
-        priceAfterDiscount : priceBook - totDiscount,
-        totalPrice : priceBook - totDiscount + totTax
-    };
-    return varPrice;
+    ])
+    console.log(book[0].Books)
+    return book[0].Books
 }
+
+
 
 module.exports = {
     Query: {
         getAllBooks,
         getBook,
-        
+        getPagination
     },
 
     Mutation: {
         createBook,
         updateBook,
         deleteBook,
-        calculatePrice
+        // calculatePrices
+        
     }
 }

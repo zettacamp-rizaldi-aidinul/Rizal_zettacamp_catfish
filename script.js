@@ -114,14 +114,15 @@ async function PriceOfCredit(termOfCredit, valPrice, creditMonth) {
 async function bookPurchasing() {
   
   const valPrice = calculatePrice(discount,tax);
+  console.log(valPrice)
   const priceTotal = await PriceOfCredit(termOfCredit, valPrice, creditMonth);
   const readFile = await readDataFile();
   
-const books = mongoose.model("books", booksSchema);
+// const books = mongoose.model("books", booksSchema);
   return {
     valPrice,
     priceTotal,
-    readFile,
+    // readFile,
   }
 }
 
@@ -171,7 +172,7 @@ app.get('/withoutAwait', checkAuth, async (req, res) => {
 
 app.get('/withAwait', checkAuth, async (req, res) => {
   const detail = await bookPurchasing();
-  console.log(findBook);
+  // console.log(findBook);
   res.send(detail)
 });
 
