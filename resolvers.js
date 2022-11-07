@@ -1,4 +1,7 @@
 const BookModel = require('./models')
+const BookshelfModel = require('./bookshelfmodel')
+const bookshelf = require('./bookshelfmodel')
+const ShelfbookbyDate = require('./dateloader');
 
 async function getAllBooks(_, {pagination2}) {
     const book = await BookModel.aggregate([
@@ -60,13 +63,35 @@ async function getPagination(_, {limit, skip}){
     return book[0].Books
 }
 
+async function getAllBookshelf(parent, args, context){
+    // const bookId = context.book[0]._id
+    // const dateId = context.date[0]._id
+    console.log(context)
+    const result = await BookshelfModel.find({
+        // $or: [{
+        //     created_by: userId
+        // },
+        // {
+        //     added_date: dateId
+        // }]
+    })
+    return result
+}
 
+const getShelfbookbyDate = async function (parent, args, context) {
+    // console.log(parent.created_by);
+    console.log(context)
+    if (parent.book_id) {
+        return await context.ShelfbookbyDate.load(parent.book_id);
+    };
+};
 
 module.exports = {
     Query: {
         getAllBooks,
         getBook,
-        getPagination
+        getPagination,
+        getAllBookshelf
     },
 
     Mutation: {
@@ -75,5 +100,9 @@ module.exports = {
         deleteBook,
         // calculatePrices
         
+    },
+
+    detailbook: {
+        book_id: getShelfbookbyDate
     }
 }

@@ -6,10 +6,10 @@ const { buildSchema } = require("graphql");
 
 const typeDefs = gql`
   type Book {
-    _id: ID!
-    title: String!
-    author: String!
-    price: Int!
+    _id: ID
+    title: String
+    author: String
+    price: Int
   }
 
   type calculatePrice{
@@ -55,10 +55,30 @@ const typeDefs = gql`
     skip: Int
   }
 
+  type detailbook {
+    book_id: Book
+    stock: Int
+  }
+
+  type Date {
+    _id: ID
+    date: String
+    time: String
+  }
+
+
+  type bookshelf {
+    _id: ID
+    shelf_name: String
+    book_ids: [detailbook]
+    added_date : [Date]
+  }
+
   type Query {
     getAllBooks(pagination2:paginationInput): [pagination]
     getBook(_id: ID!): Book
-    getPagination(limit: Int, skip: Int): [pagination]  
+    getPagination(limit: Int, skip: Int): [pagination]
+    getAllBookshelf: [bookshelf]
   }
 
   type Mutation {

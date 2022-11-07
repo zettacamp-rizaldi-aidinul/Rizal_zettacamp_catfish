@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const mongoDB = require("./models")
 const bookShelf = require("./bookshelfmodel")
 const moment = require('moment');
-
+const {bookshelfLoader} = require ("./bookloader")
 const typeDefs = require('./schema')
 const resolvers = require('./resolvers')
 const bodyParser = require('body-parser');
@@ -410,7 +410,18 @@ app.get('/pagination', checkAuth, async (req, res) => {
 })
 
 // console.log(typeDefs)
-const server = new ApolloServer({typeDefs, resolvers});
+const server = new ApolloServer({
+  typeDefs, 
+  resolvers,
+  context: function ({
+    req
+}) {
+    req: req;
+    return {
+      bookshelfLoader
+    };
+}
+});
 server.start().then(res => {
       server.applyMiddleware({
           app
