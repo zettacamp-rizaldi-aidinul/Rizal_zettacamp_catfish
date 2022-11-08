@@ -7,6 +7,13 @@ const jwt = require("jsonwebtoken");
 const mongoose = require('mongoose');
 const songs = require("./songmodel");
 const playlist = require("./playlistmodel")
+// const {playlistLoader} = require ("./song")
+const { ApolloServer } = require('apollo-server-express');
+const typeDefs = require('./schema')
+const resolvers = require('./resolvers')
+const getPlaylistSongLoader = require('./songloader')
+// console.log(getPlaylistSongLoader)
+
 
 function generateAccessToken(payload) {
   return jwt.sign(payload, 'key', { expiresIn: '1h' });
@@ -357,4 +364,28 @@ app.get('/playlists/process', auth, async (req, res) => {
   res.send(processPlaylist)
 })
 
-app.listen(port);
+const server = new ApolloServer({
+  typeDefs, 
+  resolvers,
+  context: function ({
+    req
+}) {
+    req: req;
+    return {
+      req,
+      getPlaylistSongLoader
+    };
+}
+});
+server.start().then(res => {
+  server.applyMiddleware({
+    app
+  });
+  // run port 
+  app.listen({port:5000}, () => {
+    console.log(`App running in port`);
+  });
+});
+
+
+// app.listen(port);
